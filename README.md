@@ -1,5 +1,7 @@
 # NodeJob
 
+[![codecov](https://codecov.io/gh/tkukushkin/nodejob-controller/graph/badge.svg)](https://codecov.io/gh/tkukushkin/nodejob-controller)
+
 A Kubernetes controller with a single CRD, `NodeJob`. It runs a Job on every matching node and
 re-runs it when the job template changes.
 
