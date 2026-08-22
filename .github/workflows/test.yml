@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  test:
+    permissions:
+      contents: read
+      pull-requests: read
+      code-quality: write
+    name: Run on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6.3.0
+        with:
+          go-version-file: go.mod
+
+      - name: Running Tests
+        run: |
+          go mod tidy
+          make test
+
+      - name: Generated manifests are up to date
+        run: |
+          make manifests generate
+          git diff --exit-code chart/templates/generated api/v1alpha1/zz_generated.deepcopy.go
+
+      - name: Lint the chart
+        run: make chart-lint
+
+      - name: Convert the coverage profile to Cobertura
+        run: go run github.com/boumenot/gocover-cobertura@v1.5.0 < cover.out > cover.xml
+
+      - name: Upload the coverage report
+        uses: actions/upload-code-coverage@d8e329117199404bba6fc81efe8093dc7c015e34 # v1.4.2
+        with:
+          file: cover.xml
+          language: Go
+          label: code-coverage/go

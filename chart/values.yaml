@@ -1,0 +1,46 @@
+image:
+  repository: ghcr.io/tkukushkin/nodejob-controller
+  # Defaults to the chart's appVersion.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+# Only one replica is ever active: the others hold a lease and wait. Raise this for faster
+# failover, not for throughput.
+replicaCount: 1
+
+# Spreading only matters with replicaCount > 1.
+affinity: {}
+# podAntiAffinity:
+#   requiredDuringSchedulingIgnoredDuringExecution:
+#   - topologyKey: kubernetes.io/hostname
+#     labelSelector:
+#       matchLabels:
+#         app.kubernetes.io/name: nodejob-controller
+
+topologySpreadConstraints: []
+# - maxSkew: 1
+#   topologyKey: topology.kubernetes.io/zone
+#   whenUnsatisfiable: ScheduleAnyway
+#   labelSelector:
+#     matchLabels:
+#       app.kubernetes.io/name: nodejob-controller
+# - maxSkew: 1
+#   topologyKey: kubernetes.io/hostname
+#   whenUnsatisfiable: DoNotSchedule
+#   labelSelector:
+#     matchLabels:
+#       app.kubernetes.io/name: nodejob-controller
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 128Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+# Placement of the controller itself, not of the Jobs it creates.
+nodeSelector: {}
+tolerations: []

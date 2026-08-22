@@ -1,0 +1,38 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: nodejob-controller
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - watch
+- apiGroups:
+  - tkukushkin.github.io
+  resources:
+  - nodejobs
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - tkukushkin.github.io
+  resources:
+  - nodejobs/finalizers
+  verbs:
+  - update

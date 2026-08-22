@@ -1,0 +1,10 @@
+apiVersion: v2
+name: nodejob-controller
+description: Runs a Job on every node the pod template selects, and re-runs it when the template changes.
+type: application
+# Both are overwritten from the release tag at publish time; these values only apply to a
+# local `helm install ./chart`.
+version: 0.1.0
+appVersion: "0.1.0"
+# CEL validation rules in the CRD.
+kubeVersion: ">=1.25.0-0"
