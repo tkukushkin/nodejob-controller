@@ -44,3 +44,16 @@ resources:
 # Placement of the controller itself, not of the Jobs it creates.
 nodeSelector: {}
 tolerations: []
+
+# Allows ingress only to the metrics and health ports.
+networkPolicy:
+  enabled: true
+  # Egress rules; empty means allow-all. The controller only needs the API server,
+  # whose address is cluster-specific.
+  egress: []
+
+serviceMonitor:
+  enabled: false
+  interval: 30s
+  # Extra labels, e.g. to match a Prometheus serviceMonitorSelector.
+  labels: {}
